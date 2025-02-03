@@ -23,7 +23,7 @@
   <email>slusarz@horde.org</email>
   <active>no</active>
  </lead>
- <date>2022-11-04</date>
+ <date>2025-02-03</date>
  <version>
   <release>3.0.0alpha7</release>
   <api>3.0.0alpha1</api>
@@ -34,7 +34,7 @@
  </stability>
  <license uri="http://www.horde.org/licenses/lgpl21">LGPL-2.1-only</license>
  <notes>
-* 
+* |+
  </notes>
  <contents>
   <dir baseinstalldir="/" name="/">
@@ -42,6 +42,7 @@
     <dir name="workflows">
      <file name="ci.yml" role="php" />
      <file name="phpdoc.yml" role="php" />
+     <file name="release.yml" role="php" />
      <file name="update-satis.yml" role="php" />
     </dir> <!-- /.github/workflows -->
    </dir> <!-- /.github -->
@@ -51,6 +52,7 @@
       <file name="CHANGES" role="doc" />
      </dir> <!-- /doc/Horde/Auth -->
     </dir> <!-- /doc/Horde -->
+    <file name="components.conf" role="doc" />
    </dir> <!-- /doc -->
    <dir name="lib">
     <dir name="Horde">
@@ -64,6 +66,7 @@
       <file name="Customsql.php" role="php" />
       <file name="Cyrsql.php" role="php" />
       <file name="Exception.php" role="php" />
+      <file name="Fallback.php" role="php" />
       <file name="Ftp.php" role="php" />
       <file name="Http.php" role="php" />
       <file name="Imap.php" role="php" />
@@ -171,30 +174,25 @@
     </dir> <!-- /migration/Horde -->
    </dir> <!-- /migration -->
    <dir name="test">
-    <dir name="Horde">
-     <dir name="Auth">
-      <dir name="fixtures">
-       <file name="test.passwd" role="test" />
-      </dir> <!-- /test/Horde/Auth/fixtures -->
-      <dir name="Unit">
-       <dir name="Sql">
-        <dir name="Pdo">
-         <file name="SqliteLockTest.php" role="test" />
-         <file name="SqliteTest.php" role="test" />
-        </dir> <!-- /test/Horde/Auth/Unit/Sql/Pdo -->
-        <file name="Base.php" role="test" />
-        <file name="Locks.php" role="test" />
-       </dir> <!-- /test/Horde/Auth/Unit/Sql -->
-       <file name="AuthTest.php" role="test" />
-       <file name="KolabTest.php" role="test" />
-       <file name="PasswdTest.php" role="test" />
-      </dir> <!-- /test/Horde/Auth/Unit -->
-      <file name="AllTests.php" role="test" />
-      <file name="Autoload.php" role="test" />
-      <file name="bootstrap.php" role="test" />
-      <file name="TestCase.php" role="test" />
-     </dir> <!-- /test/Horde/Auth -->
-    </dir> <!-- /test/Horde -->
+    <dir name="fixtures">
+     <file name="test.passwd" role="test" />
+    </dir> <!-- /test/fixtures -->
+    <dir name="Unit">
+     <dir name="Sql">
+      <dir name="Pdo">
+       <file name="SqliteLockTest.php" role="test" />
+       <file name="SqliteTest.php" role="test" />
+      </dir> <!-- /test/Unit/Sql/Pdo -->
+      <file name="Base.php" role="test" />
+      <file name="Locks.php" role="test" />
+     </dir> <!-- /test/Unit/Sql -->
+     <file name="AuthTest.php" role="test" />
+     <file name="KolabTest.php" role="test" />
+     <file name="PasswdTest.php" role="test" />
+    </dir> <!-- /test/Unit -->
+    <file name="AllTests.php" role="test" />
+    <file name="bootstrap.php" role="test" />
+    <file name="TestCase.php" role="test" />
    </dir> <!-- /test -->
    <file name="LICENSE" role="doc" />
   </dir> <!-- / -->
@@ -232,7 +230,9 @@
   <filelist>
    <install as="workflows/ci.yml" name=".github/workflows/ci.yml" />
    <install as="workflows/phpdoc.yml" name=".github/workflows/phpdoc.yml" />
+   <install as="workflows/release.yml" name=".github/workflows/release.yml" />
    <install as="workflows/update-satis.yml" name=".github/workflows/update-satis.yml" />
+   <install as="components.conf" name="doc/components.conf" />
    <install as="CHANGES" name="doc/Horde/Auth/CHANGES" />
    <install as="Horde/Auth.php" name="lib/Horde/Auth.php" />
    <install as="Horde/Auth/Auto.php" name="lib/Horde/Auth/Auto.php" />
@@ -241,6 +241,7 @@
    <install as="Horde/Auth/Customsql.php" name="lib/Horde/Auth/Customsql.php" />
    <install as="Horde/Auth/Cyrsql.php" name="lib/Horde/Auth/Cyrsql.php" />
    <install as="Horde/Auth/Exception.php" name="lib/Horde/Auth/Exception.php" />
+   <install as="Horde/Auth/Fallback.php" name="lib/Horde/Auth/Fallback.php" />
    <install as="Horde/Auth/Ftp.php" name="lib/Horde/Auth/Ftp.php" />
    <install as="Horde/Auth/Http.php" name="lib/Horde/Auth/Http.php" />
    <install as="Horde/Auth/Http/Remote.php" name="lib/Horde/Auth/Http/Remote.php" />
@@ -287,78 +288,20 @@
    <install as="locale/tr/LC_MESSAGES/Horde_Auth.mo" name="locale/tr/LC_MESSAGES/Horde_Auth.mo" />
    <install as="locale/tr/LC_MESSAGES/Horde_Auth.po" name="locale/tr/LC_MESSAGES/Horde_Auth.po" />
    <install as="migration/1_horde_auth_base_tables.php" name="migration/Horde/Auth/1_horde_auth_base_tables.php" />
-   <install as="Horde/Auth/AllTests.php" name="test/Horde/Auth/AllTests.php" />
-   <install as="Horde/Auth/Autoload.php" name="test/Horde/Auth/Autoload.php" />
-   <install as="Horde/Auth/bootstrap.php" name="test/Horde/Auth/bootstrap.php" />
-   <install as="Horde/Auth/fixtures/test.passwd" name="test/Horde/Auth/fixtures/test.passwd" />
-   <install as="Horde/Auth/TestCase.php" name="test/Horde/Auth/TestCase.php" />
-   <install as="Horde/Auth/Unit/AuthTest.php" name="test/Horde/Auth/Unit/AuthTest.php" />
-   <install as="Horde/Auth/Unit/KolabTest.php" name="test/Horde/Auth/Unit/KolabTest.php" />
-   <install as="Horde/Auth/Unit/PasswdTest.php" name="test/Horde/Auth/Unit/PasswdTest.php" />
-   <install as="Horde/Auth/Unit/Sql/Base.php" name="test/Horde/Auth/Unit/Sql/Base.php" />
-   <install as="Horde/Auth/Unit/Sql/Locks.php" name="test/Horde/Auth/Unit/Sql/Locks.php" />
-   <install as="Horde/Auth/Unit/Sql/Pdo/SqliteLockTest.php" name="test/Horde/Auth/Unit/Sql/Pdo/SqliteLockTest.php" />
-   <install as="Horde/Auth/Unit/Sql/Pdo/SqliteTest.php" name="test/Horde/Auth/Unit/Sql/Pdo/SqliteTest.php" />
+   <install as="AllTests.php" name="test/AllTests.php" />
+   <install as="bootstrap.php" name="test/bootstrap.php" />
+   <install as="fixtures/test.passwd" name="test/fixtures/test.passwd" />
+   <install as="TestCase.php" name="test/TestCase.php" />
+   <install as="Unit/AuthTest.php" name="test/Unit/AuthTest.php" />
+   <install as="Unit/KolabTest.php" name="test/Unit/KolabTest.php" />
+   <install as="Unit/PasswdTest.php" name="test/Unit/PasswdTest.php" />
+   <install as="Unit/Sql/Base.php" name="test/Unit/Sql/Base.php" />
+   <install as="Unit/Sql/Locks.php" name="test/Unit/Sql/Locks.php" />
+   <install as="Unit/Sql/Pdo/SqliteLockTest.php" name="test/Unit/Sql/Pdo/SqliteLockTest.php" />
+   <install as="Unit/Sql/Pdo/SqliteTest.php" name="test/Unit/Sql/Pdo/SqliteTest.php" />
   </filelist>
  </phprelease>
  <changelog>
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
- 
   <release>
    <version>
     <release>0.1.0</release>
@@ -1283,9 +1226,9 @@
     <api>alpha</api>
    </stability>
    <date>2022-11-04</date>
-   <license uri="http://www.horde.org/licenses/lgpl21">LGPL-2.1</license>
+   <license uri="http://www.horde.org/licenses/lgpl21">LGPL-2.1-only</license>
    <notes>
-* 
+* |+
    </notes>
   </release>
  </changelog>
