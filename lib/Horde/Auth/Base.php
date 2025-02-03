@@ -148,8 +148,11 @@ abstract class Horde_Auth_Base
 
         try {
             $this->_credentials['userId'] = $userId;
-            if (($this->hasCapability('lock')) &&
-                $this->isLocked($userId)) {
+            if (
+                $login
+                && $this->hasCapability('lock')
+                && $this->isLocked($userId)
+            ) {
                 $details = $this->isLocked($userId, true);
                 if ($details['lock_timeout'] == Horde_Lock::PERMANENT) {
                     $message = Horde_Auth_Translation::t("Your account has been permanently locked");
@@ -159,6 +162,10 @@ abstract class Horde_Auth_Base
                 throw new Horde_Auth_Exception($message, Horde_Auth::REASON_LOCKED);
             }
             $this->_authenticate($userId, $credentials);
+            if (!$login) {
+                $this->_credentials['userId'] = null;
+                return true;
+            }
             $this->setCredential('userId', $this->_credentials['userId']);
             $this->setCredential('credentials', $credentials);
             if ($this->hasCapability('badlogincount')) {
@@ -166,16 +173,15 @@ abstract class Horde_Auth_Base
             }
             return true;
         } catch (Horde_Auth_Exception $e) {
-            if (($code = $e->getCode()) &&
-                $code != Horde_Auth::REASON_MESSAGE) {
-                if (($code == Horde_Auth::REASON_BADLOGIN) &&
-                    $this->hasCapability('badlogincount')) {
-                    $this->_badLogin($userId);
-                }
-                $this->setError($code, $e->getMessage());
-            } else {
-                $this->setError(Horde_Auth::REASON_MESSAGE, $e->getMessage());
+            $code = $e->getCode() ?: Horde_Auth::REASON_MESSAGE;
+            if (
+                $login
+                && $code == Horde_Auth::REASON_BADLOGIN
+                && $this->hasCapability('badlogincount')
+            ) {
+                $this->_badLogin($userId);
             }
+            $this->setError($code, $e->getMessage());
             return false;
         }
     }
