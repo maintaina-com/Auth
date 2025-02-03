@@ -4,8 +4,8 @@
  * @package    Auth
  * @subpackage UnitTests
  */
-namespace Horde\Auth\Unit\Sql;
-use Horde\Auth\TestCase;
+namespace Horde\Auth\Test\Unit\Sql;
+use Horde\Auth\Test\TestCase;
 use \Horde_Db_Migration_Migrator;
 use \Horde_Auth_Sql;
 

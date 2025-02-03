@@ -2,7 +2,7 @@
 /**
  * Prepare the test setup.
  */
-namespace Horde\Auth\Unit\Sql;
+namespace Horde\Auth\Test\Unit\Sql;
 
 /**
  * @category   Horde
