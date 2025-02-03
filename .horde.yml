@@ -55,9 +55,11 @@ dependencies:
       horde/ldap: ^3
       horde/imsp: ^3
       horde/http: ^3
-      horde/test: ^3
     ext:
       ctype: '*'
       ftp: '*'
       pam: '*'
       sasl: '*'
+  dev:
+    composer:
+      horde/test: ^3

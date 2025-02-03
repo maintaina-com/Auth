@@ -2,10 +2,9 @@
 /**
  * Prepare the test setup.
  */
-namespace Horde\Auth\Unit\Sql\Pdo;
-use Horde\Auth\Unit\Sql\Base;
+namespace Horde\Auth\Test\Unit\Sql\Pdo;
+use Horde\Auth\Test\Unit\Sql\Locks;
 use \Horde_Test_Factory_Db;
-use \Horde_Db_Migration_Migrator;
 
 /**
  * @category   Horde
@@ -13,7 +12,7 @@ use \Horde_Db_Migration_Migrator;
  * @subpackage UnitTests
  */
 
-class SqliteTest extends Base
+class SqliteLockTest extends Locks
 {
     public static function setUpBeforeClass(): void
     {

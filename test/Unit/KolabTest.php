@@ -13,8 +13,9 @@
  * @author     Gunnar Wrobel <wrobel@pardus.de>
  * @license    http://www.horde.org/licenses/lgpl21 LGPL-2.1
  */
-namespace Horde\Auth\Unit;
-use Horde\Auth\TestCase;
+namespace Horde\Auth\Test\Unit;
+use Horde\Auth\Test\TestCase;
+use Horde_Auth_Kolab;
 
 class KolabTest extends TestCase
 {

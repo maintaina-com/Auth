@@ -14,10 +14,10 @@
  * @license    http://www.horde.org/licenses/lgpl21 LGPL
  */
 
-namespace Horde\Auth;
-use Horde_Test_Case;
+namespace Horde\Auth\Test;
+use Horde\Test\TestCase as HordeTestTestCase;
 
-class TestCase extends Horde_Test_Case
+class TestCase extends HordeTestTestCase
 {
     public function getCredentials()
     {
